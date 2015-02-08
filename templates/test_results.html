@@ -1,17 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
 {% load exam_extra %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% block main_body %}
 
-{{ test.name }}<hr>
-{% for ques in question %}
-<li>{{ ques.title }}&nbsp; &nbsp;</li> correct answer - {{ ques.correct_answer }} &nbsp; &nbsp; your choice was {{ choice|your_choice:ques }}<hr>
-{% endfor %}
+    <div class="col-md-12">
+        <h4><b>Test:</b> {{ test.name }}</h4>
+        <div class="col-md-12">
+            <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Questions
+                        </th>
+                        <th>
+                            Correct Answer
+                        </th>
+                        <th>
+                            Your Choice
+                        </th>
+                    </tr>
+                    {% for ques in question %}
+                    <tr>
+                        <td>
+                            {{ ques.title }}
+                        </td>
+                        <td>
+                            {{ ques.correct_answer }}
+                        </td>
+                        <td>
+                            {{ choice|your_choice:ques }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 
-
-</body>
-</html>
+{% endblock %}
