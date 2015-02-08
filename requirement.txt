@@ -1,0 +1,15 @@
+Django==1.7.4
+django-bootstrap==0.2.4
+django-bootstrap3==5.1.1
+django-bootstrapped==0.1.1.dev0
+django-import-export==0.2.6
+django-jquery==1.9.1
+django-jsonify==0.3.0
+django-twitter-bootstrap==3.3.0
+itsdangerous==0.24
+Jinja2==2.7.3
+pytz==2014.10
+pyxdg==0.25
+requests==2.5.1
+simplejson==3.6.5
+SQLAlchemy==0.9.8
