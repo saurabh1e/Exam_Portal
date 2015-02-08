@@ -3,10 +3,10 @@ from user.models import UserProfile, ProjectDetails
 from django.template import RequestContext
 from django.shortcuts import render_to_response, HttpResponseRedirect, redirect
 from django.contrib.auth.models import User, AnonymousUser
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import logout, login, authenticate
 
-
+@login_required()
 def user_profile(request, p_id):
     context = RequestContext(request)
 
@@ -18,7 +18,7 @@ def user_profile(request, p_id):
     context_dict = {'user': user, 'userprofile': user_prof, 'projects': projects}
     return render_to_response('userprofile.html', context_dict, context)
 
-
+@login_required()
 def curr_profile(request):
     context = RequestContext(request)
     print(request.user)
@@ -87,3 +87,22 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render_to_response('login.html', {}, context)
+
+@login_required()
+def All_User(request):
+    context = RequestContext(request)
+    return render_to_response('all_user.html', context)
+
+
+@login_required()
+def user_data(request):
+    context = RequestContext(request)
+    users = UserProfile.objects.order_by('roll_number').all()
+    result = []
+    for user in users:
+        data = []
+        data.append(user.user.first_name)
+        data.append(user.user.last_name)
+        data.append(user.roll_number)
+        result.append(data)
+    return JsonResponse({"results": result})
