@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from exam.models import *
 from user.models import UserProfile
 from datetime import datetime, timedelta
-import pytz
+
 
 def index(request):
     context = RequestContext(request)
@@ -32,6 +32,7 @@ def test_name(request, t_id):
     random.shuffle(q_id)
     request.session['count'] = q_id
     request.session['time'] = str(datetime.now() + timedelta(minutes=330))
+    request.session['minutes'] = str(test_id.time)
     context_dict = {'t_id': t_id}
     print(request.session['count'])
     return render_to_response('test_name.html', context_dict, context)
@@ -168,7 +169,7 @@ def test_select(request):
 def savetime(request):
     x = request.session['time']
     print(x)
-    y = 90
+    y = request.session['minutes']
     x = datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
     print(x)
-    return JsonResponse({"result": x, "ti": y})
+    return JsonResponse({"result": x, "ti": int(y)})

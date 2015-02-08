@@ -18,11 +18,10 @@
             <script>
                 $(function () {
                     $.getJSON('/exam/savetime', function (data) {
+                        console.log(data.result);
                         var dat = new Date(Date.parse(data.result));
                         var newYear = new Date(dat.setMinutes(dat.getMinutes() + data.ti));
-                        console.log(newYear);
-                        var check = new Date();
-                        console.log(check);
+                        console.log(dat);
 
                         $('#defaultCountdown').countdown({until: newYear, format: 'MS', expiryUrl: "/result"});
 
