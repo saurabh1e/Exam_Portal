@@ -57,14 +57,15 @@
 
 
 .row {
-    margin-right: 10% !important;
-    margin-left: 10% !important;
+    margin-right: 0% !important;
+    margin-left: 0% !important;
     margin-top: 10% !important;
+    margin-bottom: 10% !important;
 }
 
 
 
-body {
+.body {
 	padding-top:50px;
 }
 
@@ -173,10 +174,10 @@ body {
 }
 
 .divider {
-    display: block;
+    display: inline-block;
     position: relative;
-    height: 3px;
-    width: 50%;
+    height: 5px!important;
+    width: 100%;
     background: none repeat scroll 0% 0% #F2811D;
     margin: 0.5em 0px;
 }
@@ -448,4 +449,12 @@ section {
 .bg-4 {
 	padding-top:30px;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(20,20,20,0.2)),to(rgba(255,255,255,0)), color-stop(1,#000));
+}
+
+.background{
+  background: url("/static/images/light-grey.jpg");
+}
+
+.margin{
+    margin-top: 2% !important;
 }

@@ -4,11 +4,10 @@
 
 
 {% block main_body %}
-    <div class="container-fluid">
-        <div class="col-md-3 side">
+        <div class="col-md-3">
             <div id="defaultCountdown"></div>
         </div>
-        <div class="col-md-5 question">
+        <div class="col-md-6 question">
             <div class="form">
                 <form method="post" action="http://0.0.0.0:8000/exam/test/{{ test.s_id }}/ques/">
                 {% csrf_token %}
@@ -26,9 +25,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-3 side">
+        <div class="col-md-3">
             <p>Question left to answer {{ length }}</p>
         </div>
-    </div>
 {% endblock %}
-{% block registration %}{% endblock %}

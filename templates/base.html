@@ -1,6 +1,6 @@
 {% load static %}
-
-    <div class="wrap">
+    <div class="container-fluid background">
+    <div class="row">
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <!-- Bootstrap -->
@@ -19,7 +19,7 @@
                 $(function () {
                     $.getJSON('/exam/savetime', function (data) {
                         console.log(data.result);
-                        var dat = new Date(Date.parse(data.result));
+                        var dat = new Date(data.result);
                         var newYear = new Date(dat.setMinutes(dat.getMinutes() + data.ti));
                         console.log(dat);
 
@@ -34,7 +34,7 @@
                 }
             </script>
         </head>
-
+        <div>
 			<nav class="navbar-default navbar-fixed-top" role="navigation">
 				<div class="navbar-header">
 
@@ -67,7 +67,7 @@
                             <ul class="dropdown-menu">
                             <div class="col-md-10" >
                                 <li><a href="/user/profile/" onclick="myFunction()">Profile</a></li><br>
-                                <li><a href="/exam/result/" onclick="myFunction()">Results</a></li>
+                                <li><a href="/exam/results/" onclick="myFunction()">Results</a></li>
                                 <li class="divider"></li>
                                 <li><a href="http://0.0.0.0:8000/user/logout" class="btn">Log Out</a></li>
                             </div>
@@ -99,17 +99,16 @@
 
                 </div>
             </nav>
-        {% block main_body %}
-            <div class="container-fluid">
-                <div class="col-md-12">
 
-                </div>
-            </div>
+        </div>
+        {% block main_body %}
+
         {% endblock %}
     </div>
 
-
+    <div>
         <footer class="footer panel">
                     <p class="text-muted credit">Created using <a href="http://django.com">Django</a> and <a href="http://python.com">Python</a> by <a href="/user/profile/1113310188">Saurabh Gupta</a></p>
         </footer>
-
+    </div>
+</div>
