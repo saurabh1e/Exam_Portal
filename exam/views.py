@@ -7,16 +7,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from exam.models import *
 from user.models import UserProfile
 from datetime import datetime, timedelta
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     context = RequestContext(request)
     return render_to_response('base.html', context)
 
-
+@login_required(login_url='/user/login')
 def test_name(request, t_id):
     context = RequestContext(request)
     test_id = Test.objects.get(s_id=t_id)
+    print(request.user)
+    if request.user is None:
+        return render_to_response('/')
     user1 = UserProfile.objects.get(user=request.user)
     try:
         score_card = Score_Card.objects.get(user=user1, test=test_id)
@@ -38,6 +41,7 @@ def test_name(request, t_id):
     return render_to_response('test_name.html', context_dict, context)
 
 
+@login_required(login_url='/user/login')
 def test(request, t_id):
     print('started')
     context = RequestContext(request)
@@ -132,6 +136,7 @@ def test(request, t_id):
     return render_to_response("questions.html", context_dict, context)
 
 
+@login_required(login_url='/user/login')
 def results(request):
 
     context = RequestContext(request)
@@ -145,6 +150,7 @@ def results(request):
     return render_to_response('result.html', context_dict, context)
 
 
+@login_required(login_url='/user/login')
 def test_results(request, t_id):
 
     context = RequestContext(request)
@@ -156,9 +162,9 @@ def test_results(request, t_id):
 
     return render_to_response('test_results.html', context_dict, context)
 
+@login_required(login_url='/user/login')
 def test_select(request):
     context = RequestContext(request)
-
     user = request.user
     userprof = UserProfile.objects.get(user=user.id)
     test = Test.objects.filter(branch_code__in=[userprof.branch_code, 0])

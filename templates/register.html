@@ -1,77 +1,38 @@
-<!DOCTYPE>
+{% extends 'base.html' %}
 {% load static %}
-<HTML xmlns="http://www.w3.org/1999/html">
 
-<head>
-<script type=text/javascript>
-    $(function() {
-        $('#check').blur(function () {
-            $.getJSON('/check_email', {
-            "email": $('input[name="email"]').val()
-                }, function (data) {
-                $("#result").text(data.result);
-                });
-            return false
-        })
-    });
-</script>
-</head>
+{% block main_body %}
+    <div class="col-md-3">
 
-<body>
-<div class="col-md-6">
- 	<form method="post" action="http://0.0.0.0:8000/user/register/">
-		 {% csrf_token %}
-		 <fieldset>
-		 	<table>
-		  		<tr>
-					<td><label for="username">User Name</label></td>
-					<td><input type="text" name="username" placeholder=" Please enter your name" id="name"></td>
-					  </tr>
-					  <tr>
-					  		<td><label for="email">Email</label></td>
-					  		<td><input type="email" name="email" placeholder=" Please enter your email address" id="email1"></td>
-					  </tr>
-					  <tr>
-					  		<td><label for="password">Password</label></td>
-					  		<td><input type="password" name="password" placeholder="Please enter a password" id="password1"></td>
-					  <tr>
-					  		<td><label for="cpassword">Password</label></td>
-					  		<td><input type="password" name="cpassword" placeholder="Please re enter a password" id="password2"></td>
-					  </tr>
-					  <tr>
-					  		<td><label for="roll_no">Roll Number</label></td>
-					  		<td><input type="number" name="roll_no" placeholder="Please enter a your roll no" id="roll_no"></td>
-					  </tr>
-					  <tr>
-					<!-- Allow form submission with keyboard without duplicating the dialog button -->
-					  <td><input type="submit" value="register" class="btn"></td>
-					  </tr>
-					</table>
-					 </fieldset>
-		</form>
-</div>
+    </div>
+    <div class="col-md-6 form">
+        <form method="post" class="form" action="http://0.0.0.0:8000/user/register/">
+             {% csrf_token %}
+             <fieldset>
+                <table class="table-bordered">
+                    <tr>
+                        <td><label for="username">User Name</label></td>
+                        <td><input type="text" name="username" placeholder=" Please enter your name" id="name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email</label></td>
+                        <td><input type="email" name="email" placeholder=" Please enter your email address" id="email1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password</label></td>
+                        <td><input type="password" name="password" placeholder="Please enter a password" id="password1"></td>
+                    <tr>
+                        <td><label for="cpassword">Password</label></td>
+                        <td><input type="password" name="cpassword" placeholder="Please re enter a password" id="password2"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="roll_no">Roll Number</label></td>
+                        <td><input type="number" name="roll_no" placeholder="Please enter a your roll no" id="roll_no"></td>
+                    </tr>
+                </table><br>
+                 <input type="submit" value="Register" class="button">
+             </fieldset>
+        </form>
+    </div>
 
-
-
-<div>
-    <form method="post" action="http://0.0.0.0:8000/user/register/">
-        {% csrf_token %}
-        <fieldset>
-            <label for="username">User Name</label>
-            <input type="text" name="username" placeholder=" Please enter your name" id="name" class="text ui-widget-content ui-corner-all">
-            <label for="email">Email</label>
-            <input type="email" name="email" placeholder=" Please enter your email address" id="email1"  class="text ui-widget-content ui-corner-all">
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="Please enter a password" id="password1"  class="text ui-widget-content ui-corner-all">
-            <label for="cpassword">Password</label>
-            <input type="password" name="cpassword" placeholder="Please re enter a password" id="password2"  class="text ui-widget-content ui-corner-all">
-            <label for="roll_no">Roll Number</label>
-            <input type="number" name="roll_no" placeholder="Please enter a your roll no" id="roll_no"  class="text ui-widget-content ui-corner-all">
-    <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            <input type="submit" value="register" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-icon-back ui-btn-icon-left" data-rel="register">
-        </fieldset>
-    </form>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-icon-back ui-btn-icon-left" data-rel="back">Go Back</a>
-</div>
-	</BODY>
-</HTML>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from user.models import UserProfile, ProjectDetails
 from django.template import RequestContext
-from django.shortcuts import render_to_response, HttpResponseRedirect
+from django.shortcuts import render_to_response, HttpResponseRedirect, redirect
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
@@ -56,7 +56,7 @@ def register_user(request):
                 user.save()
                 print("saving profile")
                 userprof.save()
-            return HttpResponse("Sucessfully registered")
+            return render_to_response('login.html')
         elif str(password) != str(cpassword):
             return HttpResponse("password mismatch")
     return render_to_response('register.html', context)
