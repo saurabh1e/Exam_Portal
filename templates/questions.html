@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load exam_extra %}
+
+
+{% block main_body %}
+    <div class="container-fluid">
+        <div class="col-md-3 side">
+            <div id="defaultCountdown"></div>
+        </div>
+        <div class="col-md-5 question">
+            <div class="form">
+                <form method="post" action="http://0.0.0.0:8000/exam/test/{{ test.s_id }}/ques/">
+                {% csrf_token %}
+                    <fieldset>{% csrf_token %}
+                        <label for="{{ ques.id }}">{{ ques.title }}</label>
+                        <input type="hidden" name="ques" id="{{ ques.id }}" value="{{ ques.ss_id }}" /><hr>
+                        {% csrf_token %}
+                        {% for ans in ans %}
+                            {% csrf_token %}
+                            <input type="checkbox" name="ans" value="{{ ans.id }}" id="{{ ans.id }}" />
+                            <label for="{{ ans.id }}">{{ ans.ans }}</label><br><br>
+                        {% endfor %}
+                        <input type="submit" value="submit">
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3 side">
+            <p>Question left to answer {{ length }}</p>
+        </div>
+    </div>
+{% endblock %}
+{% block registration %}{% endblock %}

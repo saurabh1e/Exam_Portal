@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+
+{% load static %}
+
+{% block title %}About{% endblock %}
+
+{% block main_body_block %}
+<div class="hero-unit">
+    <h1>About Me!</h1>
+    This is <strong>about me page</strong>.<br/>
+
+    You've visited the site on <strong>{{ visit_count }} occasion(s).</strong><br/>
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load exam_extra %}
+
+
+{% block main_body %}
+<div class="container-fluid">
+        <div class="col-md-3">
+            <div id="defaultCountdown"></div>
+        </div>
+        <div class="col-md-6">
+            <p><h4><b>Your timer! has already started just click start button to start the exam or else go back if you want to abort!
+            Once started you cant abort the exam or go the back button</b></h4></p>
+            <form method="post" action="/exam/test/{{ t_id }}/ques/">
+                {% csrf_token %}
+                <input type="submit" value="start test"/>
+            </form>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block registration %}{% endblock %}

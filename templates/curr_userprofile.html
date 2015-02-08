@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_body %}
+
+<div id="masthead" class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="row">
+                 <h4><b>User Details</b></h4>
+                <div class="col-lg-5 col-sm-12 col-md-5 col-xs-12 table-responsive">
+                    <table class="table"><tr><td><img src="/media/{{ userprofile.avatar_url }}" colspan="4" class="image-responsive" width="250px"></td></tr></table>
+                </div>
+
+                <div class="col-lg-6 col-sm-12 col-md-6 col-xs-12 table-responsive">
+                    <table class="table">
+                        <tr><td>User Name</td><td>{{ user.username }}</td></tr>
+                        <tr><td>Roll Number</td><td>{{ userprofile.roll_number }}</td></tr>
+                        <tr><td>Email</td><td>{{ user.email }}</td></tr>
+                        <tr><td>Marks in 10th</td><td>{{ userprofile.tenth }}%</td></tr>
+                        <tr><td>Marks in 12th</td><td>{{ userprofile.twelfth }}%</td></tr>
+                        <tr><td>Marks in Grad.</td><td>{{ userprofile.graduation }}%</td></tr>
+                        <tr><td>Date of Birth</td><td>{{ userprofile.dob }}</td></tr>
+                        <tr><td>Phone Number</td><td>{{ userprofile.phone_no }}</td></tr>
+                        <tr><td>Course</td><td>{{ userprofile.course }}</td></tr>
+                        <tr><td>Year</td><td>{{ userprofile.year }}</td></tr>
+                        <tr><td>Branch</td><td>{{ userprofile.branch }}</td></tr>
+                        <tr><td>Address</td><td>{{ userprofile.address }}</td></tr>
+                        <tr><td>Resume</td><td><a href="/media/{{ userprofile.cv }}" target="_blank">download/open</a></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div><a href="/user/profile/edit" class="align-right pull-right link">edit</a>
+    </div><br><br>
+    <span class="divider"></span>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4><b>Projects & Internships</b></h4><br>
+
+                {% for project in projects %}
+                <h5><b>{{ project.title }}</b></h5><br>
+                <p>{{ project.body }}</p><br>
+                <link><a href="/media/{{ project.report }}" target="_blank">Report</a><br>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block registration %}{% endblock %}
+
+</html>

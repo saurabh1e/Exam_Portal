@@ -1,0 +1,116 @@
+{% load static %}
+
+    <div class="wrap">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+
+            <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+            <link href="{% static 'css/mystyle.css' %}" type="text/css" rel="stylesheet">
+            <link rel="stylesheet" type="text/css" href="/static/css/jquery.countdownTimer.css">
+            <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+            <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
+            <link rel="stylesheet" type="text/css" href="/static/count/jquery.countdown.css">
+            <script type="text/javascript" src="/static/count/jquery.plugin.js"></script>
+            <script type="text/javascript" src="/static/count/jquery.countdown.js"></script>
+
+            <script>
+                $(function () {
+                    $.getJSON('/exam/savetime', function (data) {
+                        var dat = new Date(Date.parse(data.result));
+                        var newYear = new Date(dat.setMinutes(dat.getMinutes() + data.ti));
+                        console.log(newYear);
+                        var check = new Date();
+                        console.log(check);
+
+                        $('#defaultCountdown').countdown({until: newYear, format: 'MS', expiryUrl: "/result"});
+
+                    })
+                });
+            </script>
+            <script>
+                function myFunction() {
+                    $(".dropdown-menu").toggle(".dropdown-toggle");
+                }
+            </script>
+        </head>
+
+			<nav class="navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+
+                    <a class="navbar-brand" rel="home" href="#" title="Exam Portal">
+                              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                              </button>
+                    <img style="max-width:45px; margin-top: -26%;"
+                         src="{% static 'images/studentportal-icon.png' %}"></a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav col-sm-7 col-md-7 col-lg-7">
+						<li class="nav-pills">
+							<a href="/">Home</a>
+						</li>
+						<li>
+							<a href="/exam/tests">Give Exam</a>
+						</li>
+
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right col-sm-2 col-md-2 col-lg-2">
+					    <li class="dropdown ">
+                        {% if user.is_authenticated %}
+                            <a href="#" onclick="myFunction()" class="dropdown-toggle" data-toggle="dropdown">Welcome {{ user.username }}<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                            <div class="col-md-10" >
+                                <li><a href="/user/profile/" onclick="myFunction()">Profile</a></li><br>
+                                <li><a href="/exam/result/" onclick="myFunction()">Results</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://0.0.0.0:8000/user/logout" class="btn">Log Out</a></li>
+                            </div>
+                            </ul>
+                        {% else %}
+                            <a href="#" onclick="myFunction()" class="dropdown-toggle" data-toggle="dropdown">User Account<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="" id="dialog-form" title="login">
+                                        <div>
+                                            <form method="post" class="col-sm-12 col-lg-12 col-md-12 col-xs-12" action="/user/login/">
+                                                {% csrf_token %}
+                                                <fieldset>
+                                                    <label for="username">Username</label>
+                                                    <input type="text" name="username" id="username" placeholder="enter username" class="text ui-widget-content ui-corner-all">
+                                                    <label for="password">Password</label>
+                                                    <input type="password" name="password" id="password" placeholder="enter your password" class="text ui-widget-content ui-corner-all"><hr>
+                                                    <input class="btn" value="login"  type="submit" >
+                                                    <a href="#myPopupDialog" onclick="myFunction()" data-rel="popup" data-position-to="window" data-transition="fade" class="btn">Register</a>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </li>
+                    </ul>
+
+                </div>
+            </nav>
+        {% block main_body %}
+            <div class="container-fluid">
+                <div class="col-md-12">
+
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+
+
+        <footer class="footer panel">
+                    <p class="text-muted credit">Created using <a href="http://django.com">Django</a> and <a href="http://python.com">Python</a> by <a href="/user/profile/1113310188">Saurabh Gupta</a></p>
+        </footer>
+

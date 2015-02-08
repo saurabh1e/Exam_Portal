@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_body %}
+    <div class="container-fluid">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-6">
+            <div class="table">
+                <table class="table-bordered">
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                {% for t in test %}
+                    <tr>
+                        <td><a href="/exam/test/{{ t.s_id }}">{{ t.name }}</a></td>
+                        <td>Pending</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+    </div>
+{% endblock %}

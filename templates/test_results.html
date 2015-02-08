@@ -1,0 +1,17 @@
+{% load exam_extra %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+{{ test.name }}<hr>
+{% for ques in question %}
+<li>{{ ques.title }}&nbsp; &nbsp;</li> correct answer - {{ ques.correct_answer }} &nbsp; &nbsp; your choice was {{ choice|your_choice:ques }}<hr>
+{% endfor %}
+
+
+</body>
+</html>
