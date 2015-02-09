@@ -69,7 +69,6 @@ def user_logout(request):
 
 
 def user_login(request):
-
     context = RequestContext(request)
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
@@ -80,7 +79,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/', )
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -101,7 +100,7 @@ def user_data(request):
     result = []
     for user in users:
         data = []
-        data.append(user.user.first_name)
+        data.append('<a href="/user/profile/'+str(user.roll_number)+'">'+user.user.first_name+'</a>')
         data.append(user.user.last_name)
         data.append(user.roll_number)
         result.append(data)

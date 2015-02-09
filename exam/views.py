@@ -24,7 +24,7 @@ def test_name(request, t_id):
     try:
         score_card = Score_Card.objects.get(user=user1, test=test_id)
         if score_card is not None and score_card.disables == True:
-            return redirect('/exam/results')
+            return redirect('/exam/tests/')
     except ObjectDoesNotExist as e:
         print("got exception")
     request.session['user'] = request.user.username

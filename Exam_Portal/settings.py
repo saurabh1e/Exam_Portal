@@ -17,18 +17,15 @@ SETTINGS_DIR = os.path.dirname(__file__)
 
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
-#STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__),'static'),)
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
-DATABASE_PATH = os.path.join(PROJECT_PATH, 'myblog.db')
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
-
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'myblog.db')
 print("Settings directory:", BASE_DIR)
 print("Project root:", PROJECT_PATH)
 print("Templates:", TEMPLATE_PATH)
 print("Static:", STATIC_PATH)
 print("Static_root:", STATIC_ROOT)
-print("DB:", DATABASE_PATH)
 
 LOGIN_URL = '/user/login/'
 
