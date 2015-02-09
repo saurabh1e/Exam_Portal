@@ -56,7 +56,7 @@
 					<ul class="nav navbar-nav navbar-right col-sm-2 col-md-2 col-lg-2">
 					    <li class="dropdown ">
                         {% if user.is_authenticated %}
-                            <a href="#" onclick="myFunction()" class="dropdown-toggle" data-toggle="dropdown">Welcome {{ user.username }}<strong class="caret"></strong></a>
+                            <a href="#" onclick="myFunction()" class="dropdown-toggle" data-toggle="dropdown">Welcome {{ request.user.username }}<strong class="caret"></strong></a>
                             <ul class="dropdown-menu">
                             <div class="col-md-10" >
                                 <li><a href="/user/profile/" onclick="myFunction()">Profile</a></li><br>
