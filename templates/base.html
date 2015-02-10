@@ -95,7 +95,21 @@
 
         </div>
         {% block main_body %}
+            <div class="col-md-6">
+                    <div class="row-fluid">
+                        {% if user.is_authenticated %}
+                        <p><h4> Welcome {{ request.user.username }}</h4></p>
 
+                        {% else %}
+                        <p><h4><b>sample user name and password</h4>
+                        <h5>username: guestuser</h5>
+                        <h5>password: 123</h5>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
         {% endblock %}
     </div>
 

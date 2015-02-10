@@ -56,7 +56,7 @@ def register_user(request):
                 user.save()
                 print("saving profile")
                 userprof.save()
-            return render_to_response('login.html')
+            return render_to_response('login.html', context)
         elif str(password) != str(cpassword):
             return HttpResponse("password mismatch")
     return render_to_response('register.html', context)
