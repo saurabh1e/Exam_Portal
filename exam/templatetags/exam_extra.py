@@ -1,15 +1,13 @@
 
 from django import template
 register = template.Library()
+from django.core.exceptions import ObjectDoesNotExist
 
 @register.filter()
 def your_choice(choice, ques):
-    c = choice.get(ques=ques)
-
-    if str(c) == ques.correct_answer:
-        return "Correct"
-    else:
-        return c
+    if choice:
+        c = choice.get(ques=ques)
+        return str(c.ans)
 
 @register.filter()
 def sum(score_card):

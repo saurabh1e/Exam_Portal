@@ -1,11 +1,11 @@
 {% load static %}
-    <div class="container-fluid background">
-    <div class="row">
+
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <!-- Bootstrap -->
 
             <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+            <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
             <link href="{% static 'css/mystyle.css' %}" type="text/css" rel="stylesheet">
             <link rel="stylesheet" type="text/css" href="/static/css/jquery.countdownTimer.css">
             <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -24,10 +24,12 @@
                 }
             </script>
         </head>
-        <div>
-			<nav class="navbar-default navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-
+<body class="background">
+    <div id="wrap">
+    <header class="navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
                     <a class="navbar-brand" rel="home" href="#" title="Exam Portal">
                               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span class="sr-only">Toggle navigation</span>
@@ -37,24 +39,24 @@
                               </button>
                     <img style="max-width:45px; margin-top: -26%;"
                          src="{% static 'images/studentportal-icon.png' %}"></a>
-				</div>
+                </div>
 
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav col-sm-7 col-md-7 col-lg-7">
-						<li class="nav-pills">
-							<a href="/">Home</a>
-						</li>
-						<li>
-							<a href="/exam/tests">Give Exam</a>
-						</li>
-						<li>
-							<a href="/user/all">Students</a>
-						</li>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-pills">
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/exam/tests">Give Exam</a>
+                        </li>
+                        <li>
+                            <a href="/user/all">Students</a>
+                        </li>
 
-					</ul>
+                    </ul>
 
-					<ul class="nav navbar-nav navbar-right col-sm-2 col-md-2 col-lg-2">
-					    <li class="dropdown ">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown ">
                         {% if user.is_authenticated %}
                             <a href="#" onclick="myFunction()" class="dropdown-toggle" data-toggle="dropdown">Welcome {{ request.user.username }}<strong class="caret"></strong></a>
                             <ul class="dropdown-menu">
@@ -62,7 +64,7 @@
                                 <li><a href="/user/profile/" onclick="myFunction()">Profile</a></li><br>
                                 <li><a href="/exam/results/" onclick="myFunction()">Results</a></li>
                                 <li class="divider"></li>
-                                <li><a href="http://0.0.0.0:8000/user/logout" class="btn">Log Out</a></li>
+                                <li><a href="/user/logout" class="btn">Log Out</a></li>
                             </div>
                             </ul>
                         {% else %}
@@ -71,7 +73,7 @@
                                 <li>
                                     <div class="" id="dialog-form" title="login">
                                         <div>
-                                            <form method="post" class="col-sm-12 col-lg-12 col-md-12 col-xs-12" action="/user/login/">
+                                            <form method="post" class="col-md-6" action="/user/login/">
                                                 {% csrf_token %}
                                                 <fieldset>
                                                     <label for="username">Username</label>
@@ -91,31 +93,27 @@
                     </ul>
 
                 </div>
-            </nav>
-
-        </div>
-        {% block main_body %}
-            <div class="col-md-6">
-                    <div class="row-fluid">
-                        {% if user.is_authenticated %}
-                        <p><h4> Welcome {{ request.user.username }}</h4></p>
-
-                        {% else %}
-                        <p><h4><b>sample user name and password</h4>
-                        <h5>username: guestuser</h5>
-                        <h5>password: 123</h5>
-                        {% endif %}
-                    </div>
-                </div>
             </div>
+        </div>
+    </header>
 
-        {% endblock %}
-        {% endblock %}
+    <div class="container">
+        <div class="row">
+            {% block main_body %}
+                <div class="col-md-6">
+                        <div class="row custom-row">
+                            {% if user.is_authenticated %}
+                            <h4> Welcome {{ request.user.username }}</h4>
+                            {% else %}
+                            <h4><b>sample user name and password</b></h4>
+                            <h5>username: guestuser</h5>
+                            <h5>password: 123</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+            {% endblock %}
+        </div>
+    </div>
     </div>
 
-    <div>
-        <footer class="footer panel">
-                    <p class="text-muted credit">Created using <a href="http://django.com">Django</a> and <a href="http://python.com">Python</a> by <a href="/user/profile/1113310188">Saurabh Gupta</a></p>
-        </footer>
-    </div>
-</div>
+</body>

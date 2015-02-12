@@ -6,6 +6,7 @@ try:
 except ImportError:
     from django.utils.encoding import force_unicode as force_text
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 class Test(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -21,14 +22,14 @@ class Test(models.Model):
     #     self.branch_code = branch_code
     #     print(name)
     def save(self, *args, **kwargs):
-        from itsdangerous import URLSafeSerializer
-        s = URLSafeSerializer(SECRET_KEY)
-        x = Test.objects.all().count()
-        print(x)
-        print(type(x))
-        self.s_id = s.dumps(x + 1)
-        if self.pk is None:
-            super(Test, self).save(self, *args, **kwargs)
+        if not self.pk:
+            from itsdangerous import URLSafeSerializer
+            s = URLSafeSerializer(SECRET_KEY)
+            x = Test.objects.all().count()
+            print(x)
+            print(type(x))
+            self.s_id = s.dumps(x + 1)
+        super(Test, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -44,12 +45,12 @@ class Question(models.Model):
     ss_id = models.CharField(max_length=100, blank=True, null=False)
 
     def save(self, *args, **kwargs):
-        from itsdangerous import URLSafeSerializer
-        s = URLSafeSerializer(SECRET_KEY)
-        x = datetime.now()
-        self.ss_id = s.dumps(str(x))
         if self.pk is None:
-            super(Question, self).save(self, *args, **kwargs)
+            from itsdangerous import URLSafeSerializer
+            s = URLSafeSerializer(SECRET_KEY)
+            x = datetime.now()
+            self.ss_id = s.dumps(str(x))
+        super(Question, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = ('question')
@@ -85,7 +86,7 @@ class Answer(models.Model):
 class Choice(models.Model):
     test = models.ForeignKey(Test)
     ques = models.OneToOneField(Question, verbose_name= ('ques'))
-    ans = models.OneToOneField(Answer, verbose_name= ('ans'),)
+    ans = models.CharField(max_length=50, verbose_name=('ans'), blank=True, null=True)
     user = models.ForeignKey(UserProfile, blank=True, null=True)
 
     # def __unicode__(self):
@@ -95,7 +96,7 @@ class Choice(models.Model):
     #     return force_text(self.ans.ans)
 
     def __str__(self):
-        return force_text(self.ans.ans)
+        return force_text(self.ans)
 
     # def __call__(self):
     #     return force_text(self.ans.ans)
@@ -104,20 +105,23 @@ class Choice(models.Model):
     class Meta:
         verbose_name =  ('choice')
 
-
 class Score_Card(models.Model):
 
     user = models.ForeignKey(UserProfile)
     test = models.ForeignKey(Test)
-    score = models.IntegerField(default=0.00)
-    disables = models.BooleanField(default=False,  null=False, blank=False)
+    score = models.FloatField(default=0.00)
+    dis = models.BooleanField(default=False, null=False, blank=False)
+    time = models.DateTimeField(default=datetime.now(), null=False, blank=False)
+    minutes = models.FloatField(default=0.00, null=False, blank=False)
+
+
+
     def __unicode__(self):
         return self.score
 
     def __int__(self):
-        return force_text(self.score)
+        return self.score
 
 
     def __str__(self):
-        return force_text(self.score)
-
+        return str(self.score)

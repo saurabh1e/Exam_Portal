@@ -4,6 +4,7 @@
 
 
 {% block main_body %}
+    <div class="row-fluid custom-row">
         <div class="col-md-3">
             <div id="defaultCountdown"></div>
         </div>
@@ -11,7 +12,7 @@
             <div class="form">
                 <form method="post" action="http://0.0.0.0:8000/exam/test/{{ test.s_id }}/ques/">
                 {% csrf_token %}
-                    <fieldset>{% csrf_token %}
+                    <fieldset>
                         <label for="{{ ques.id }}">{{ ques.title }}</label>
                         <input type="hidden" name="ques" id="{{ ques.id }}" value="{{ ques.ss_id }}" /><hr>
                         {% csrf_token %}
@@ -28,6 +29,7 @@
         <div class="col-md-3">
             <p>Question left to answer {{ length }}</p>
         </div>
+    </div>
 
 
             <script>

@@ -8,6 +8,7 @@ from exam.models import *
 from user.models import UserProfile
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
+import time
 
 def index(request):
     context = RequestContext(request)
@@ -21,21 +22,44 @@ def test_name(request, t_id):
     if request.user is None:
         return render_to_response('/')
     user1 = UserProfile.objects.get(user=request.user)
-    try:
-        score_card = Score_Card.objects.get(user=user1, test=test_id)
-        if score_card is not None and score_card.disables == True:
-            return redirect('/exam/tests/')
-    except ObjectDoesNotExist as e:
-        print("got exception")
+    score_card = Score_Card.objects.get_or_create(user=user1, test=test_id)
+    print(score_card[1])
+    if score_card[0].dis:
+        return redirect('/exam/tests/')
+    if not score_card[1]:
+        print("in score card")
+        request.session['minutes'] = int(score_card[0].minutes)
+    elif score_card[1]:
+        request.session['minutes'] = test_id.time
+        print(request.session['minutes'])
+        score_card[0].minutes = test_id.time
+        print("saving score card minutes")
+        score_card[0].save()
     request.session['user'] = request.user.username
-    q_id = []
-    count = Question.objects.filter(test=test_id).order_by('?')
-    for i in count:
-        q_id.append(i.ss_id)
-    random.shuffle(q_id)
-    request.session['count'] = q_id
+    try:
+        choice = Choice.objects.filter(user=user1, test=test_id).all()
+        result = []
+        for c in choice:
+            result.append(c.ques.ss_id)
+        print(result)
+        q_id = []
+        count = Question.objects.filter(test=test_id).order_by('?')
+        for i in count:
+            q_id.append(i.ss_id)
+        for q in range(len(result)):
+            print(result[q])
+            q_id.remove(result[q])
+        print(q_id)
+        random.shuffle(q_id)
+        request.session['count'] = q_id
+    except ObjectDoesNotExist:
+        q_id = []
+        count = Question.objects.filter(test=test_id).order_by('?')
+        for i in count:
+            q_id.append(i.ss_id)
+        random.shuffle(q_id)
+        request.session['count'] = q_id
     request.session['time'] = str(datetime.now() + timedelta(minutes=330))
-    request.session['minutes'] = str(test_id.time)
     context_dict = {'t_id': t_id}
     print(request.session['count'])
     request.session['start'] = 1
@@ -45,6 +69,8 @@ def test_name(request, t_id):
 @login_required(login_url='/user/login')
 def test(request, t_id):
     if request.session['start'] == 1:
+        request.session['score_minutes'] = (time.monotonic())/60
+        print(request.session['score_minutes'])
         request.session['time'] = str(datetime.now() + timedelta(minutes=330))
         request.session['start'] = 2
         print("inside time")
@@ -54,12 +80,6 @@ def test(request, t_id):
     length = len(request.session['count'])
     test_id = Test.objects.get(s_id=t_id)
     user1 = UserProfile.objects.get(user=request.user)
-    try:
-        score_card = Score_Card.objects.get(user=user1, test=test_id)
-        if score_card is not None and score_card.disables == True:
-            return redirect('/exam/results')
-    except ObjectDoesNotExist as e:
-        print("got exception")
     print('getting in post')
     if request.method == 'POST':
         if 'ans' in request.POST and 'ques' in request.POST:
@@ -75,7 +95,7 @@ def test(request, t_id):
                     test=test_id,
                     ques=ques,
                     user=user1,
-                    ans=ans1,
+                    ans=ans1.ans,
                 )
 
             except IntegrityError:
@@ -92,7 +112,7 @@ def test(request, t_id):
             print("saving")
             marks = Score_Card.objects.get_or_create(user=user1, test=test_id)
             marks = Score_Card.objects.get(user=user1, test=test_id)
-            if marks.disables == True:
+            if marks.dis == True:
                 return redirect('/exam/results')
             if ans1.ans == ques.correct_answer:
                 marks.score += test_id.postive
@@ -100,6 +120,55 @@ def test(request, t_id):
             else:
                 marks.score -= test_id.negative
                 print(marks.score)
+            marks.minutes -= (time.monotonic()/60) - request.session['score_minutes']
+            print(marks.minutes)
+            marks.save()
+            if len(request.session['count']) < 1:
+                random_index = 0
+                return redirect('/exam/results')
+            else:
+                request.session['last_ques'] = request.session['count'][-1]
+                random_index = request.session['count'].pop()
+                request.session.modified = True
+                print(random_index)
+                print(request.session['count'])
+            ques = Question.objects.get(ss_id=random_index)
+            ans = Answer.objects.filter(ques=ques)
+            print(ques.id)
+            context_dict = {'ques': ques, 'ans': ans, 'test': test_id, 'next_ques': random_index, 'length': length}
+            return render_to_response("questions.html", context_dict, context)
+
+        elif 'ans' not in request.POST and 'ques' in request.POST:
+            print("ques in post")
+            ques_id = request.POST['ques']
+            ques = Question.objects.get(test=test_id, ss_id=ques_id)
+            try:
+                Choice.objects.create(
+                    test=test_id,
+                    ques=ques,
+                    user=user1,
+                    ans="No Option Selected"
+                )
+
+            except IntegrityError:
+                print('error')
+                if len(request.session['count']) < 1:
+                    return redirect('/exam/results')
+                else:
+                    ques_id = request.session['last_ques']
+                    ques = Question.objects.get(ss_id=ques_id)
+                    ans = Answer.objects.filter(ques=ques)
+                    context_dict = {'ques': ques, 'ans': ans, 'test': test_id, 'length': length}
+                    return render_to_response("questions.html", context_dict, context)
+
+            print("saving")
+            marks = Score_Card.objects.get_or_create(user=user1, test=test_id)
+            marks = Score_Card.objects.get(user=user1, test=test_id)
+            if marks.dis == True:
+                return redirect('/exam/results')
+
+            marks.minutes -= (time.monotonic()/60) - request.session['score_minutes']
+            print(marks.minutes)
             marks.save()
 
             if len(request.session['count']) < 1:
@@ -149,8 +218,9 @@ def results(request):
     users = UserProfile.objects.get(user=request.user.id)
     score_card = Score_Card.objects.filter(user=users)
     for scorecard in score_card:
-        scorecard.disables = True
-        print(scorecard.disables)
+        scorecard.dis = True
+        scorecard.time = datetime.now()
+        print(scorecard.dis)
         scorecard.save()
     context_dict = {'score_card': score_card}
     return render_to_response('result.html', context_dict, context)
@@ -180,8 +250,6 @@ def test_select(request):
 
 def savetime(request):
     x = request.session['time']
-    print(x)
     y = request.session['minutes']
     x = datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
-    print(x)
     return JsonResponse({"result": x, "ti": int(y)})

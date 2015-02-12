@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block main_body %}
-    <div class="container-fluid">
+    <div class="col-md-12">
         <h4><b>User Details</b></h4>
         <div class="col-md12">
-            <div class="container-fluid col-lg-5 col-sm-12 col-md-5 col-xs-12 table-responsive">
+            <div class="container-fluid col-lg-5 col-sm-12 col-md-5 col-xs-12 table-responsive custom-row">
                 <table class="table"><tr><td><img src="/media/{{ userprofile.avatar_url }}" colspan="4" class="image-responsive" width="250px"></td></tr></table>
             </div>
-            <div class=" container-fluid scol-lg-6 col-sm-12 col-md-6 col-xs-12 table-responsive">
-                <table class="table">
+            <div class=" container-fluid col-lg-6 col-sm-12 col-md-6 col-xs-12 table-responsive custom-row">
+                <table class="table custmo-row">
                     <tr><td>User Name</td><td>{{ user.username }}</td></tr>
                     <tr><td>Roll Number</td><td>{{ userprofile.roll_number }}</td></tr>
                     <tr><td>Email</td><td>{{ user.email }}</td></tr>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <br><br>
-        <div class="col-md-12">
+        <div class="col-md-12 custom-row">
             <span class="divider">
 
             </span>

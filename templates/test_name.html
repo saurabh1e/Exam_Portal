@@ -4,18 +4,17 @@
 
 
 {% block main_body %}
-<div class="container-fluid">
         <div class="col-md-3">
-            <div></div>
+            <div class="row custom-row"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 custom-row">
             <p><h4><b>Click the Start button to start your Exam</b></h4></p>
             <form method="post" action="/exam/test/{{ t_id }}/ques/">
                 {% csrf_token %}
                 <input type="submit" value="start test"/>
             </form>
         </div>
-</div>
+
 
 {% endblock %}
 
